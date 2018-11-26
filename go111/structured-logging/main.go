@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"runtime"
 	"strings"
+
+	"github.com/ryutah/gae-standard-sample/go111/structured-logging/hoge"
 
 	"google.golang.org/genproto/googleapis/api/monitoredres"
 
@@ -32,6 +35,10 @@ var (
 )
 
 func main() {
+	hoge.Hoge()
+}
+
+func main2() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		ctx := newContext(r)
 
@@ -95,11 +102,21 @@ func (l logger) debug(ctx context.Context, format string, args ...interface{}) {
 }
 
 func (l logger) log(ctx context.Context, severity logging.Severity, format string, args ...interface{}) {
+	pc, file, line, _ := runtime.Caller(2)
+	var (
+		f        = runtime.FuncForPC(pc)
+		parts    = strings.Split(f.Name(), "/")
+		funcName = parts[len(parts)-1]
+	)
+
 	trace := ctx.Value(traceID).(string)
 	l.logger.Log(logging.Entry{
 		Trace:    fmt.Sprintf("projects/%s/traces/%s", projectID, strings.Split(trace, "/")[0]),
 		Severity: severity,
-		Payload:  fmt.Sprintf(format, args...),
+		Payload: map[string]interface{}{
+			"message": fmt.Sprintf(format, args...),
+			"caller":  fmt.Sprintf("%s#%s:L%v", file, funcName, line),
+		},
 		Resource: resource,
 	})
 }
