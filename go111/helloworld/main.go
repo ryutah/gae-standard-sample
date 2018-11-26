@@ -19,6 +19,9 @@ func main() {
 		for k, v := range r.Header {
 			glog.Infof("%s: %v", k, v)
 		}
+		for _, v := range os.Environ() {
+			glog.Infof("%s", v)
+		}
 		fmt.Fprintln(w, "Hello World!!")
 	})
 
