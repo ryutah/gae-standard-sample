@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"google.golang.org/genproto/googleapis/api/monitoredres"
 
@@ -96,7 +97,7 @@ func (l logger) debug(ctx context.Context, format string, args ...interface{}) {
 func (l logger) log(ctx context.Context, severity logging.Severity, format string, args ...interface{}) {
 	trace := ctx.Value(traceID).(string)
 	l.logger.Log(logging.Entry{
-		Trace:    trace,
+		Trace:    fmt.Sprintf("projects/%s/traces/%s", projectID, strings.Split(trace, "/")[0]),
 		Severity: severity,
 		Payload:  fmt.Sprintf(format, args...),
 		Resource: resource,
