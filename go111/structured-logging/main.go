@@ -8,8 +8,6 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/ryutah/gae-standard-sample/go111/structured-logging/hoge"
-
 	"google.golang.org/genproto/googleapis/api/monitoredres"
 
 	"cloud.google.com/go/logging"
@@ -35,10 +33,6 @@ var (
 )
 
 func main() {
-	hoge.Hoge()
-}
-
-func main2() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		ctx := newContext(r)
 
