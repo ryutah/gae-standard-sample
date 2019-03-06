@@ -1,0 +1,6 @@
+cron:
+  - description: "Example Cron Job"
+    url: /service2
+    schedule: every day 16:00
+    timezone: Asia/Tokyo
+    target: service2
