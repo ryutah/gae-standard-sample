@@ -1,0 +1,23 @@
+version: "3"
+services:
+  app:
+    build:
+      context: ./docker/application
+    command:
+      - "--env_var"
+      - "GOOGLE_CLOUD_PROJECT=[YOUR_PROJECT_ID]"
+      - "/app"
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    volumes:
+      - .:/app
+    links:
+      - firestore
+    environment:
+      FIRESTORE_EMULATOR_HOST: "firestore:5000"
+  firestore:
+    build:
+      context: ./docker/firestore
+    environment:
+      FIRESTORE_PORT: "5000"
