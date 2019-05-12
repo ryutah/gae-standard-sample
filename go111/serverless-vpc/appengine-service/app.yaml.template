@@ -1,0 +1,5 @@
+runtime: go111
+env_variables:
+  SERVICE_HOST: http://10.128.0.5
+vpc_access_connector:
+  name: projects/$GOOGLE_CLOUD_PROJECT/locations/us-central1/connectors/example
