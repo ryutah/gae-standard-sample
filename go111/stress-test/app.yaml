@@ -1,0 +1,5 @@
+runtime: go111
+automatic_scaling:
+  max_concurrent_requests: 5
+  target_throughput_utilization: 0.5
+  max_pending_latency: 15ms
